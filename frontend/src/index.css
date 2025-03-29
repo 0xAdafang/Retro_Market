@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+  font-family: 'Press Start 2P', cursive;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: white;
+  background: white;
+  overflow-x: hidden;
+  padding-bottom: 140px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3, p, label {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+button {
+  cursor: pointer;
+}
+
+.nes-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.nes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.nes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nes-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.nes-container.is-dark {
+  border: none !important;
+  box-shadow: none !important;
+  
+}
+
+.nes-btn:hover {
+  transform: scale(1.04);
+  filter: brightness(1.2);
+  transition: all 0.15s ease-in-out;
+}
+
+/* 🎮 Marquee style section */
+.home-marquee {
+  display: flex;
+  gap: 1rem;
+  animation: scroll-left 40s linear infinite;
+  width: fit-content;
+}
+
+.home-marquee-item {
+  flex: 0 0 auto;
+  transition: transform 0.3s ease;
+}
+
+.home-marquee-item:hover {
+  transform: scale(1.1);
+}
+
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.product-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInCard 0.6s ease-out forwards;
+}
+
+@keyframes fadeInCard {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home-marquee-item:hover .product-card {
+  transform: scale(1.08);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
