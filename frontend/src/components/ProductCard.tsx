@@ -31,15 +31,18 @@ export default function ProductCard({
 
         <div style={{ width: "100%", overflow: "hidden" }}>
           <h4
-            title={product.title}
-            style={{
-              fontSize: "0.7rem",
-              margin: "0.5rem 0 0.25rem",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              color: "#111",
-            }}
+             title={product.title}
+             className="product-title"
+             style={{
+               fontSize: "0.7rem",
+               margin: "0.5rem 0 0.25rem",
+               color: "#111",
+               whiteSpace: "normal",
+               overflowWrap: "break-word",
+               wordBreak: "break-word",
+               maxHeight: "2.5em", 
+               lineHeight: "1.2",
+             }}
           >
             {product.title}
           </h4>

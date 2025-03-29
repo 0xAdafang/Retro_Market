@@ -8,11 +8,10 @@ export default function Footer() {
         backgroundColor: '#282d32',
         padding: '1rem 0',
         color: '#f0f9ff',
-        position: 'fixed',
-        bottom: 0,
-        width: '100%',
+        width: '100vw', // 👈 corrige les coupures
+        maxWidth: '100%',
         fontSize: '0.7rem',
-        zIndex: 999
+        zIndex: 10,
       }}
     >
       <div

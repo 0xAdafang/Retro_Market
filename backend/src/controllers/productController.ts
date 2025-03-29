@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { pool } from '../db';
 
 export const createProduct = async (req: Request, res: Response): Promise<void> => {
-  const { title, description, price, category, image_url } = req.body;
+  const { title, description, price, category, image } = req.body;
   const userId = req.user?.userId;
 
   if (!title || !price || !category) {
@@ -13,7 +13,7 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
   try {
     const result = await pool.query(
       'INSERT INTO products (title, description, price, category, image_url, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [title, description, price, category, image_url || null, userId]
+      [title, description, price, category, image || null, userId]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {

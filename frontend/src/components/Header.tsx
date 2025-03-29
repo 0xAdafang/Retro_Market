@@ -1,10 +1,10 @@
 import { ShoppingCart } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import BurgerMenu from './BurgerMenu';
 import 'nes.css/css/nes.min.css';
 
 export default function Header() {
-  const navigate = useNavigate();
   const [user, setUser] = useState<{ email?: string; username?: string } | null>(null);
 
   useEffect(() => {
@@ -20,12 +20,6 @@ export default function Header() {
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
-    navigate('/');
-  };
-
   return (
     <header
       className="nes-container is-dark"
@@ -37,7 +31,6 @@ export default function Header() {
         alignItems: 'center',
         gap: '0.75rem',
         border: 'none',
-        
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -53,25 +46,18 @@ export default function Header() {
           marginRight: '0.5rem'
         }}
       >
-        <Link to="/" className="nes-btn is-primary" style={{ fontSize: '0.65rem' }}>Accueil</Link>
-        {!user && (
-          <>
-            <Link to="/login" className="nes-btn" style={{ fontSize: '0.65rem' }}>Connexion</Link>
-            <Link to="/register" className="nes-btn" style={{ fontSize: '0.65rem' }}>Inscription</Link>
-          </>
-        )}
-        {user && (
-          <>
-            <Link to="/orders" className="nes-btn is-success" style={{ fontSize: '0.65rem' }}>Mes commandes</Link>
-            <div className="nes-balloon from-left nes-pointer" style={{ margin: '0 4px', fontSize: '0.6rem' }}>
-              {user.username || user.email}
-            </div>
-            <button onClick={handleLogout} className="nes-btn is-error" style={{ fontSize: '0.65rem' }}>Déconnexion</button>
-          </>
-        )}
+        <div className="nes-balloon from-left nes-pointer"
+          style={{
+            margin: '0 4px',
+            fontSize: '0.6rem',
+            color: '#222',
+          }}>
+          Bonjour, {user?.username || 'visiteur'}
+        </div>
         <Link to="/cart" className="nes-btn is-warning" style={{ fontSize: '0.65rem' }}>
           <ShoppingCart size={14} style={{ marginRight: '3px' }} />Panier
         </Link>
+        <BurgerMenu />
       </nav>
     </header>
   );

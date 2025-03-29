@@ -25,7 +25,7 @@ export default function Login() {
 
       localStorage.setItem("token", data.token);
       toast.success("Connexion réussie !");
-      navigate("/");
+      window.location.href = '/';
     } catch (error) {
       toast.error((error as Error).message);
     }
