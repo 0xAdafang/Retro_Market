@@ -408,3 +408,17 @@ img {
   image-rendering: pixelated;
   object-fit: cover;
 }
+
+.glitch-header {
+  font-size: 1rem;
+  animation: glitch 1.5s infinite;
+  color: #00ffff;
+  text-shadow: 1px 1px #ff00c1, -1px -1px #00ffff;
+  line-height: 1;
+}
+
+.glitch-header:hover {
+  animation: glitch 0.8s infinite;
+  filter: brightness(1.4);
+}
+
