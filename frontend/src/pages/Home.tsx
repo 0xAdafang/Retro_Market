@@ -66,7 +66,6 @@ export default function Home() {
 
   return (
     <main className="home-layout">
-      {/* 🎮 Hero Section */}
       <section
         className="hero-section"
         style={{
@@ -94,13 +93,11 @@ export default function Home() {
         <div className="scroll-arrow">&#x25BC;</div>
       </section>
 
-      {/* 🎮 Produits */}
       <section className="products-section">
         <h2 className="nes-text is-dark" style={{ marginBottom: "1rem" }}>
           Nos Offres
         </h2>
 
-        {/* 1er défilement */}
         <div className="home-marquee">
           <div className="home-marquee-track">
             {[...products, ...products].map((product) => (
@@ -114,7 +111,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 2e défilement inversé */}
         <div className="home-marquee">
           <div className="home-marquee-track reverse-track">
             {[...products, ...products].map((product) => (
@@ -131,7 +127,6 @@ export default function Home() {
         <div className="scroll-arrow">&#x25BC;</div>
       </section>
 
-      {/* ✨ Nostalgie */}
       <section className="nostalgia-zone">
         <div className="orbit-group">
           <div className="orbit-container orbit-left orbit-radius-1">
@@ -231,7 +226,7 @@ export default function Home() {
           className="nes-text is-primary"
           style={{ textAlign: "center", marginBottom: "2rem" }}
         >
-          👥 Notre Équipe
+          Notre Équipe
         </h2>
 
         <div className="team-grid">
