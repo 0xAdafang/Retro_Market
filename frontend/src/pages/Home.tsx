@@ -222,11 +222,14 @@ export default function Home() {
           backgroundRepeat: "repeat",
         }}
       >
-        <h2
-          className="nes-text is-primary"
-          style={{ textAlign: "center", marginBottom: "2rem" }}
-        >
-          Notre Équipe
+        <h2 className="team-title-arcade">
+          {Array.from("Notre Équipe").map((char, index) => (
+            char === ' '
+              ? <span key={index} style={{ width: '0.6rem' }}>{'\u00A0'}</span>
+              : <span key={index} className={`arcade-char glitch-${(index % 5) + 1}`}>
+                  {char}
+                </span>
+          ))}
         </h2>
 
         <div className="team-grid">
