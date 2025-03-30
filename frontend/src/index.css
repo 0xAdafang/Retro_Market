@@ -397,7 +397,7 @@ img {
   width: 100%;
   max-width: 420px;
   height: 160px;
-  background-color: #212529;
+  background-color: rgba(33, 37, 41, 0.9); /* fond noir transparent */
   text-align: left;
 }
 
