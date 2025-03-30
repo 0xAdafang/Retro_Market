@@ -8,6 +8,8 @@ import avatarKevin from '../assets/chatKevin.jpg';
 import avatarDjamel from '../assets/chat2.jpg';
 import avatarGenania from '../assets/chat1.png';
 import avatarTerence from '../assets/chatTerence.jpg';
+import waveBackground from '../assets/wave.gif';
+
 
 interface Product {
   id: number;
@@ -140,58 +142,65 @@ export default function Home() {
           <h2 className="nes-text is-primary">Ravivez la nostalgie</h2>
         </div>
       </section>
-      <section className="team-section">
-      <h2 className="nes-text is-primary" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        👥 Notre Équipe
-      </h2>
+      <section
+        className="team-section"
+        style={{
+          backgroundImage: `url(${waveBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'repeat',
+        }}
+      >
+        <h2 className="nes-text is-primary" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          👥 Notre Équipe
+        </h2>
 
-      <div className="team-grid">
-        {/* Carte membre */}
-        <div className="nes-container is-dark with-title team-member">
-        <img src={avatarKevin} alt="Kevin" className="team-avatar" />
-          <div>
-            <p className="title">Kevin Espinoza</p>
-            <p>Scrum Master</p>
-            <a href="https://github.com/kevin" target="_blank" rel="noreferrer">
-              <i className="nes-icon github is-medium"></i>
-            </a>
+        <div className="team-grid">
+          <div className="nes-container is-dark with-title team-member">
+            <img src={avatarKevin} alt="Kevin" className="team-avatar" />
+            <div>
+              <p className="title">Kevin Espinoza</p>
+              <p>Scrum Master</p>
+              <a href="https://github.com/kevin" target="_blank" rel="noreferrer">
+                <i className="nes-icon github is-medium"></i>
+              </a>
+            </div>
+          </div>
+
+          <div className="nes-container is-dark with-title team-member">
+            <img src={avatarDjamel} alt="Djamel" className="team-avatar" />
+            <div>
+              <p className="title">Djamel Nait Sidenas</p>
+              <p>Développeur Web</p>
+              <a href="https://github.com/djamel" target="_blank" rel="noreferrer">
+                <i className="nes-icon github is-medium"></i>
+              </a>
+            </div>
+          </div>
+
+          <div className="nes-container is-dark with-title team-member">
+            <img src={avatarGenania} alt="Genania" className="team-avatar" />
+            <div>
+              <p className="title">Genania Obas</p>
+              <p>Développeuse Web</p>
+              <a href="https://github.com/genania" target="_blank" rel="noreferrer">
+                <i className="nes-icon github is-medium"></i>
+              </a>
+            </div>
+          </div>
+
+          <div className="nes-container is-dark with-title team-member">
+            <img src={avatarTerence} alt="Terence" className="team-avatar" />
+            <div>
+              <p className="title">Terence Sionneau</p>
+              <p>Développeur Web</p>
+              <a href="https://github.com/terence" target="_blank" rel="noreferrer">
+                <i className="nes-icon github is-medium"></i>
+              </a>
+            </div>
           </div>
         </div>
-
-        <div className="nes-container is-dark with-title team-member">
-        <img src={avatarDjamel} alt="Djamel" className="team-avatar" />
-          <div>
-            <p className="title">Djamel Nait Sidenas</p>
-            <p>Développeur Web</p>
-            <a href="https://github.com/djamel" target="_blank" rel="noreferrer">
-              <i className="nes-icon github is-medium"></i>
-            </a>
-          </div>
-        </div>
-
-        <div className="nes-container is-dark with-title team-member">
-        <img src={avatarGenania} alt="Genania" className="team-avatar" />
-          <div>
-            <p className="title">Genania Obas</p>
-            <p>Développeuse Web</p>
-            <a href="https://github.com/genania" target="_blank" rel="noreferrer">
-              <i className="nes-icon github is-medium"></i>
-            </a>
-          </div>
-        </div>
-
-        <div className="nes-container is-dark with-title team-member">
-        <img src={avatarTerence} alt="Terence" className="team-avatar" />
-          <div>
-            <p className="title">Terence Sionneau</p>
-            <p>Développeur Web</p>
-            <a href="https://github.com/terence" target="_blank" rel="noreferrer">
-              <i className="nes-icon github is-medium"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
     </main>
   );
 }
