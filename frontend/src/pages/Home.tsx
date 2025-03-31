@@ -94,9 +94,7 @@ export default function Home() {
       </section>
 
       <section className="products-section">
-        <h2 className="nes-text is-dark" style={{ marginBottom: "1rem" }}>
-         Ils sont en ventes !
-        </h2>
+        <h2 className="nes-text is-dark" style={{ marginBottom: '1rem' }}>Nos Offres</h2>
 
         <div className="home-marquee">
           <div className="home-marquee-track">
