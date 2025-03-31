@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import 'nes.css/css/nes.min.css';
+import '../index.css';
 
 interface Product {
   id: number;
@@ -8,22 +9,24 @@ interface Product {
   price: number;
   description: string;
   image: string;
-  category?: string;
+  user?: {
+    id: number;
+    name: string;
+  };
 }
 
 export default function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`/api/products/${id}`)
       .then(res => {
-        console.log('API status:', res.status);
         if (!res.ok) throw new Error('Produit non trouvé');
         return res.json();
       })
       .then(data => {
-        console.log('Produit récupéré :', data);
         setProduct(data);
       })
       .catch(err => {
@@ -31,44 +34,85 @@ export default function ProductDetail() {
       });
   }, [id]);
 
-  if (!product) return <p className="nes-text is-primary" style={{ textAlign: 'center', margin: '2rem' }}>Chargement...</p>;
-  
+async function handleAddToCart(productId: number) {
+    try {
+      const res = await fetch('/api/cart/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId }),
+      });
+
+      if (!res.ok) throw new Error('Erreur ajout au panier');
+      const data = await res.json();
+      setMessage('Produit ajouté au panier !');
+      console.log('✅ Produit ajouté :', data);
+    } catch (err) {
+      console.error(err);
+      setMessage('Erreur lors de l’ajout au panier.');
+    }
+  }
+
+  if (!product)
+    return (
+      <p className="nes-text is-primary" style={{ textAlign: 'center', margin: '2rem' }}>
+        Chargement...
+      </p>
+    );
+
   return (
-    <section
-      style={{
-        background: 'white',
-        maxWidth: '900px',
-        margin: '2rem auto',
-        padding: '2rem',
-        borderRadius: '16px',
-        boxShadow: '0 0 20px rgba(0,0,0,0.1)',
-        textAlign: 'center',
-      }}
-      className="nes-container is-rounded"
-    >
-      <img
-        src={product.image}
-        alt={product.title}
-        style={{
-          width: '100%',
-          maxWidth: '400px',
-          height: 'auto',
-          objectFit: 'contain',
-          borderRadius: '12px',
-          marginBottom: '1rem',
-        }}
-      />
-      <h2 style={{ fontSize: '1rem', color: '#111' }}>{product.title}</h2>
-      <p className="nes-text is-success" style={{ margin: '0.5rem 0' }}>
-      {Number(product.price).toFixed(2)} $
-      </p>
-      <p style={{ fontSize: '0.75rem', color: '#333', opacity: 0.8 }}>
-        {product.description}
-      </p>
-      <Link to="/" className="nes-btn is-primary" style={{ marginTop: '1.5rem', display: 'inline-block' }}>
-        Retour à l'accueil
-      </Link>
+    <section className="product-detail-wrapper">
+      <div className="nes-container is-rounded product-detail-container">
+        <div className="product-detail-content">
+          <img
+            src={product.image}
+            alt={product.title}
+            className="product-detail-image"
+          />
+          <div className="product-detail-info">
+            <h2 className="nes-text is-primary product-title">{product.title}</h2>
+            <div style={{ marginBottom: '1rem' }}>
+              <span className="nes-badge is-primary">
+                <span className="is-dark">NEUF</span>
+              </span>
+              <span className="nes-badge is-success" style={{ marginLeft: '0.5rem' }}>
+                <span className="is-dark">DISPONIBLE</span>
+              </span>
+            </div>
+            <p className="nes-text is-success product-price">
+              {Number(product.price).toFixed(2)} $
+            </p>
+            <p className="product-description">{product.description}</p>
+            <p className="product-seller">
+              Vendu par :{' '}
+              <Link to={`/vendeur/${product.user?.id}`} className="seller-link">
+                <strong>{product.user?.name || 'Utilisateur inconnu'}</strong>
+              </Link>
+            </p>
+
+            <button
+              className="nes-btn is-success"
+              style={{ marginTop: '1rem' }}
+              onClick={() => handleAddToCart(product.id)}
+            >
+              Ajouter au panier
+            </button>
+
+            {message && (
+              <p className="nes-text" style={{ marginTop: '1rem' }}>
+                {message}
+              </p>
+            )}
+
+            <Link
+              to="/"
+              className="nes-btn is-primary"
+              style={{ marginTop: '1rem', display: 'inline-block' }}
+            >
+              Retour à l'accueil
+            </Link>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
-

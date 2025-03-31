@@ -8,6 +8,8 @@ import Orders from './pages/Orders';
 import OrderDetail from './pages/OrderDetail';
 import ProductDetail from './components/ProductDetail';
 import Unauthorized from './pages/Unauthorized';
+import MyProducts from './pages/MyProducts';
+import NewProduct from './pages/NewProduct';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -62,6 +64,22 @@ function App() {
             />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route
+                path="/my-products"
+                element={
+                  <ProtectedRoute>
+                    <MyProducts />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/new-product"
+                element={
+                  <ProtectedRoute>
+                    <NewProduct />
+                  </ProtectedRoute>
+                }
+              />
           </Routes>
         </div>
         <Footer />
