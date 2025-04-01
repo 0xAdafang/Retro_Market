@@ -35,22 +35,26 @@ export default function ProductDetail() {
   }, [id]);
 
 async function handleAddToCart(productId: number) {
-    try {
-      const res = await fetch('/api/cart/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId }),
-      });
+  try {
+    const token = localStorage.getItem('token'); // ← récupère le token
+    const res = await fetch(`/api/cart/${productId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // ← ajoute le token
+      },
+      body: JSON.stringify({ productId }),
+    });
 
-      if (!res.ok) throw new Error('Erreur ajout au panier');
-      const data = await res.json();
-      setMessage('Produit ajouté au panier !');
-      console.log('✅ Produit ajouté :', data);
-    } catch (err) {
-      console.error(err);
-      setMessage('Erreur lors de l’ajout au panier.');
-    }
+    if (!res.ok) throw new Error('Erreur ajout au panier');
+    const data = await res.json();
+    setMessage('Produit ajouté au panier !');
+    console.log('✅ Produit ajouté :', data);
+  } catch (err) {
+    console.error(err);
+    setMessage('Erreur lors de l’ajout au panier.');
   }
+}
 
   if (!product)
     return (

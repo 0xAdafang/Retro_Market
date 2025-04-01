@@ -30,13 +30,24 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
 
   try {
     const result = await pool.query(
-      `SELECT p.* FROM products p
+      `SELECT p.id, p.title, p.price, p.image, 1 as quantity
+       FROM products p
        INNER JOIN cart_items c ON c.product_id = p.id
        WHERE c.user_id = $1`,
       [userId]
     );
-    res.status(200).json(result.rows);
+
+    const items = result.rows.map(item => ({
+      id: item.id,
+      title: item.title,
+      price: Number(item.price),
+      quantity: Number(item.quantity), // par défaut 1
+      img: item.image,
+    }));
+
+    res.status(200).json(items);
   } catch (error) {
+    console.error("❌ getCart error:", error);
     res.status(500).json({ message: 'Failed to fetch cart' });
   }
 };

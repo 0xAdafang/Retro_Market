@@ -35,7 +35,9 @@ export default function Header() {
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <img src="/logo.png" alt="Logo" style={{ width: '40px', height: '40px' }} />
-        <h1 className="glitch-header">Retro_Market</h1>
+        <h1 className="glitch-header">
+          <Link to="/" className="glitch-link">Retro_Market</Link>
+        </h1>
       </div>
       <nav
         style={{

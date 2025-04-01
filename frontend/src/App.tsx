@@ -10,6 +10,7 @@ import ProductDetail from './components/ProductDetail';
 import Unauthorized from './pages/Unauthorized';
 import MyProducts from './pages/MyProducts';
 import NewProduct from './pages/NewProduct';
+import OnSale from "./pages/onSale";
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -80,6 +81,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/onsale" element={<OnSale />} />
           </Routes>
         </div>
         <Footer />

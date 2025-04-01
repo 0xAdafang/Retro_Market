@@ -128,3 +128,35 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): vo
       }
     }
   }
+
+  // ✅ Middleware
+export const authenticateToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      console.error('❌ Token invalide :', err);
+      return res.sendStatus(403);
+    }
+  
+    const payload = decoded as { id: number; email?: string }; // 👈 ici
+  
+    if (payload && payload.id) {
+      req.user = { userId: payload.id, email: payload.email || '', role: 'user' };
+      console.log("🔐 Utilisateur authentifié :", req.user);
+      next();
+    } else {
+      console.error("❌ Token sans id :", decoded);
+      return res.sendStatus(403);
+    }
+  });
+};

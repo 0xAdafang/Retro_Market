@@ -79,7 +79,7 @@ export default function Home() {
         <p className="hero-subtitle">La marketplace du jeu vidéo rétro</p>
 
         <div className="home-buttons">
-          <button className="nes-btn is-success" onClick={() => navigate("/")}>
+          <button className="nes-btn is-success" onClick={() => navigate("/onsale")}>
             Acheter
           </button>
           <button

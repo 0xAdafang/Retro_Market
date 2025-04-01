@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'nes.css/css/nes.min.css';
 
@@ -12,6 +13,7 @@ interface CartItem {
 
 export default function CartPage() {
   const [items, setItems] = useState<CartItem[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -22,11 +24,17 @@ export default function CartPage() {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`Erreur serveur (${res.status}): ${errorText}`);
+        }
+        return res.json();
+      })
       .then(data => setItems(data))
       .catch(err => {
         toast.error('Erreur de chargement du panier');
-        console.error(err);
+        console.error("❌ Erreur panier :", err);
       });
   }, []);
 
@@ -53,28 +61,74 @@ export default function CartPage() {
     }
   };
 
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = items.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
 
   return (
-    <div className="nes-container with-title is-dark" style={{ maxWidth: '700px', margin: '2rem auto' }}>
-      <p className="title">Mon Panier</p>
-      {items.length === 0 ? (
-        <p className="nes-text is-warning">Votre panier est vide.</p>
-      ) : (
-        <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {items.map(item => (
-            <li key={item.id} className="nes-container is-rounded" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <img src={item.img} alt={item.title} style={{ width: '80px', height: '80px', objectFit: 'contain' }} />
-              <div style={{ flexGrow: 1 }}>
-                <h3>{item.title}</h3>
-                <p>{item.price.toFixed(2)} €</p>
-              </div>
-              <button onClick={() => removeItem(item.id)} className="nes-btn is-error">🗑️</button>
-            </li>
-          ))}
-        </ul>
-      )}
-      <p className="nes-text is-primary" style={{ marginTop: '1rem', textAlign: 'right' }}>Total : {total.toFixed(2)} €</p>
+    <div className="cart-wrapper">
+      <div className="cart-box nes-container is-rounded with-title">
+        <p className="title cart-title">Mon Panier</p>
+  
+        {items.length === 0 ? (
+          <p className="nes-text is-warning">Votre panier est vide.</p>
+        ) : (
+          <>
+            <ul
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+              }}
+            >
+              {items.map((item) => (
+                <li
+                  key={item.id}
+                  className="nes-container is-rounded cart-item"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem',
+                  }}
+                >
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    style={{
+                      width: '80px',
+                      height: '80px',
+                      objectFit: 'contain',
+                      imageRendering: 'pixelated',
+                    }}
+                  />
+                  <div style={{ flexGrow: 1 }}>
+                    <h3>{item.title}</h3>
+                    <p>{Number(item.price).toFixed(2)} $</p>
+                  </div>
+                  <button
+                    onClick={() => removeItem(item.id)}
+                    className="nes-btn is-error"
+                  >
+                    ✘
+                  </button>
+                </li>
+              ))}
+            </ul>
+  
+            <div style={{ marginTop: '1rem', textAlign: 'right' }}>
+              <p className="nes-text">Total : {total.toFixed(2)} $</p>
+              <button
+                className="nes-btn is-primary"
+                style={{ marginTop: '1rem' }}
+                onClick={() => navigate('/checkout')}
+              >
+                Valider ma commande
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
+  
 }
