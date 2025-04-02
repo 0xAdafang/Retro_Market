@@ -10,7 +10,8 @@ import ProductDetail from './components/ProductDetail';
 import Unauthorized from './pages/Unauthorized';
 import MyProducts from './pages/MyProducts';
 import NewProduct from './pages/NewProduct';
-import OnSale from "./pages/onSale";
+import OnSale from "./pages/OnSale";
+import ResetPassword from './pages/ResetPassword';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -20,6 +21,7 @@ import './index.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'nes.css/css/nes.min.css';
+import SellerShop from './pages/SellerShop';
 
 function App() {
   return (
@@ -82,6 +84,8 @@ function App() {
                 }
               />
               <Route path="/onsale" element={<OnSale />} />
+              <Route path="/reset/:token" element={<ResetPassword />} />
+              <Route path="/vendeur/:id" element={<SellerShop />} />
           </Routes>
         </div>
         <Footer />

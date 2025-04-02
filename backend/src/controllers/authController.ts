@@ -5,25 +5,38 @@ import { pool } from '../db';
 
 const JWT_SECRET = 'my_super_secret';
 
-export const registerUser = async (req: Request, res: Response): Promise<void> => {
-  const { email, password, username } = req.body;
+export const registerUser = async (req: Request, res: Response) => {
+  const { email, password, username, prenom, nom, genre } = req.body;
 
   if (!email || !password || !username) {
-    res.status(400).json({ message: 'Email, username and password required' });
-    return;
+    return res.status(400).json({ error: 'Champs requis manquants' });
   }
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await pool.query(
-      'INSERT INTO users (email, username, password) VALUES ($1, $2, $3)',
-      [email, username, hashedPassword]
+    const userExists = await pool.query(
+      'SELECT * FROM users WHERE email = $1 OR username = $2',
+      [email, username]
     );
-    res.status(201).json({ message: 'User registered successfully' });
+
+    if (userExists.rows.length > 0) {
+      return res.status(400).json({ error: 'Email ou pseudo déjà utilisé' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await pool.query(
+      `INSERT INTO users (email, password, username, prenom, nom, genre)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [email, hashedPassword, username, prenom, nom, genre]
+    );
+
+    res.status(201).json({ message: 'Utilisateur créé avec succès' });
   } catch (error) {
-    res.status(500).json({ message: 'Error registering user' });
+    console.error('Erreur register :', error);
+    res.status(500).json({ error: 'Erreur serveur' });
   }
 };
+
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
@@ -49,7 +62,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     }
 
     const token = jwt.sign({ userId: user.id, email: user.email, username: user.username }, JWT_SECRET, {
-      expiresIn: '1h'
+      expiresIn: '24h'
     });
 
     res.status(200).json({ message: 'Login successful', token });
@@ -87,6 +100,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
     await pool.query('UPDATE users SET username = $1 WHERE id = $2', [username, userId]);
     res.status(200).json({ message: 'Profile updated' });
   } catch (error) {
+    console.error("❌ registerUser error:", error);
     res.status(500).json({ message: 'Failed to update profile' });
   }
 };

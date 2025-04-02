@@ -21,29 +21,41 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-export const getAllProducts = async (req: Request, res: Response): Promise<void> => {
+export const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const result = await pool.query('SELECT * FROM products');
+    const result = await pool.query(
+      `SELECT products.*, users.username 
+       FROM products 
+       JOIN users ON users.id = products.user_id`
+    );
+
     res.status(200).json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch products' });
+    console.error("Erreur récupération des produits :", error);
+    res.status(500).json({ error: "Erreur serveur" });
   }
 };
 
-export const getProductById = async (req: Request, res: Response): Promise<Response> => {
-  const productId = req.params.id;
+export const getProductById = async (req: Request, res: Response) => {
+  const { id } = req.params;
 
   try {
-    const { rows } = await pool.query('SELECT * FROM products WHERE id = $1', [productId]);
+    const result = await pool.query(
+      `SELECT products.*, users.username 
+       FROM products 
+       JOIN users ON users.id = products.user_id 
+       WHERE products.id = $1`,
+      [id]
+    );
 
-    if (rows.length === 0) {
-      return res.status(404).json({ message: 'Produit introuvable' });
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Produit introuvable' });
     }
 
-    return res.status(200).json(rows[0]);
-  } catch (err) {
-    console.error('Erreur getProductById:', err);
-    return res.status(500).json({ message: 'Erreur serveur' });
+    res.status(200).json(result.rows[0]);
+  } catch (error) {
+    console.error('Erreur récupération produit par ID :', error);
+    res.status(500).json({ error: 'Erreur serveur' });
   }
 };
 
@@ -72,13 +84,45 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-export const getMyProducts = async (req: Request, res: Response): Promise<void> => {
+export const getMyProduct = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
   try {
-    const userId = req.user?.userId;
-    const result = await pool.query('SELECT * FROM products WHERE user_id = $1', [userId]);
+    const result = await pool.query(
+      `SELECT products.*, users.username 
+       FROM products 
+       JOIN users ON users.id = products.user_id 
+       WHERE products.id = $1`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Produit introuvable' });
+    }
+
+    res.status(200).json(result.rows[0]);
+  } catch (error) {
+    console.error('Erreur récupération produit perso :', error);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+};
+
+export const getProductsBySeller = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query(
+      `SELECT products.*, users.username 
+       FROM products
+       JOIN users ON users.id = products.user_id
+       WHERE users.id = $1`,
+      [id]
+    );
+
     res.status(200).json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch your products' });
+    console.error("Erreur récupération produits vendeur :", error);
+    res.status(500).json({ error: "Erreur serveur" });
   }
 };
 

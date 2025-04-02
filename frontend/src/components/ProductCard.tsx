@@ -35,7 +35,7 @@ export default function ProductCard({
              className="product-title"
              style={{
                fontSize: "0.7rem",
-               margin: "0.5rem 0 0.25rem",
+               margin: "0.5rem 0 0.6rem",
                color: "#111",
                whiteSpace: "normal",
                overflowWrap: "break-word",

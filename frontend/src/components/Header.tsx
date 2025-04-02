@@ -34,7 +34,7 @@ export default function Header() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <img src="/logo.png" alt="Logo" style={{ width: '40px', height: '40px' }} />
+        <img src="/logo.png" alt="Logo" style={{ width: '70px', height: '40px' }} />
         <h1 className="glitch-header">
           <Link to="/" className="glitch-link">Retro_Market</Link>
         </h1>
@@ -48,6 +48,34 @@ export default function Header() {
           marginRight: '0.5rem'
         }}
       >
+       <div className="nes-field" style={{ marginRight: '0.75rem' }}>
+          <label
+            htmlFor="search_field"
+            style={{
+              fontSize: '0.65rem',
+              color: '#fff',
+              textAlign: 'center',
+              display: 'block',
+            }}
+          >
+            Rechercher
+          </label>
+          <input
+            type="text"
+            id="search_field"
+            className="nes-input"
+            style={{ fontSize: '0.8rem', width: '300px' }}
+            placeholder="Un jeu rétro..."
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                const query = (e.target as HTMLInputElement).value.trim();
+                if (query.length > 0) {
+                  window.location.href = `/onsale?search=${encodeURIComponent(query)}`;
+                }
+              }
+            }}
+          />
+        </div>
         <div className="nes-balloon from-left nes-pointer"
           style={{
             margin: '0 4px',
@@ -59,7 +87,18 @@ export default function Header() {
         <Link to="/cart" className="nes-btn is-warning" style={{ fontSize: '0.65rem' }}>
           <ShoppingCart size={14} style={{ marginRight: '3px' }} />Panier
         </Link>
-        <BurgerMenu />
+        {user ? (
+          <BurgerMenu />
+        ) : (
+          <>
+            <Link to="/login" className="nes-btn is-success" style={{ fontSize: '0.65rem' }}>
+              Connexion
+            </Link>
+            <Link to="/register" className="nes-btn is-primary" style={{ fontSize: '0.65rem' }}>
+              Inscription
+            </Link>
+          </>
+        )}
       </nav>
     </header>
   );

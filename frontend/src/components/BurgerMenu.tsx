@@ -57,7 +57,20 @@ export default function BurgerMenu() {
             }}
           >
             {[<Link to="/" className="nes-btn is-primary">Accueil</Link>,
-              token && <Link to="/my-products" className="nes-btn is-success">Mes produits</Link>,
+              token && (
+                <button
+                  className="nes-btn is-success"
+                  onClick={() => {
+                    const user = JSON.parse(localStorage.getItem("user") || "{}");
+                    if (user.id) {
+                      navigate(`/vendeur/${user.id}`);
+                      setOpen(false);
+                    }
+                  }}
+                >
+                  Ma boutique
+                </button>
+              ),
               token && <Link to="/new-product" className="nes-btn is-warning">Mettre en vente</Link>,
               token && <Link to="/orders" className="nes-btn is-success">Mes commandes</Link>,
               token && <button onClick={handleLogout} className="nes-btn is-error">Déconnexion</button>,

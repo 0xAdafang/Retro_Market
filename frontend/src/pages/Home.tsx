@@ -24,6 +24,12 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [isScrolling, setIsScrolling] = useState(true);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const toggleScroll = (value: boolean) => {
+    setIsScrolling(value);
+  };
 
   useEffect(() => {
     fetch("/api/products")
@@ -41,7 +47,12 @@ export default function Home() {
         setLoading(false);
       });
   }, []);
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setMousePos({ x: e.clientX, y: e.clientY });
+  };
 
+  const translateX = ((mousePos.x / window.innerWidth) - 0.5) * 30;
+  const translateY = ((mousePos.y / window.innerHeight) - 0.5) * 30;
   if (loading) {
     return (
       <p
@@ -66,43 +77,46 @@ export default function Home() {
 
   return (
     <main className="home-layout">
-      <section
-        className="hero-section"
+    <section
+      className="hero-section"
+      onMouseMove={handleMouseMove}
+      style={{
+        backgroundImage: `url(${pixelBackground})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div
         style={{
-          backgroundImage: `url(${pixelBackground})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          transform: `translate(${-translateX}px, ${-translateY}px)`,
+          transition: 'transform 0.1s linear'
         }}
       >
-        <h1 className="glitch-title">Retro_Market</h1>
-        <p className="hero-subtitle">La marketplace du jeu vidéo rétro</p>
+        <h1 className="glitch-title">Achète, Revends, Collectionne</h1>
+        <p className="hero-subtitle">▼ En un clic ▼</p>
 
         <div className="home-buttons">
-          <button className="nes-btn is-success" onClick={() => navigate("/onsale")}>
-            Acheter
-          </button>
-          <button
-            className="nes-btn is-warning"
-            onClick={() => navigate("/new")}
-          >
-            Vendre
-          </button>
+          <button className="nes-btn is-success" onClick={() => navigate("/onsale")}>Acheter</button>
+          <button className="nes-btn is-warning" onClick={() => navigate("/new")}>Vendre</button>
         </div>
+      </div>
 
-        <div className="scroll-arrow">&#x25BC;</div>
-      </section>
+      <div className="scroll-arrow">&#x25BC;</div>
+    </section>
+
 
       <section className="products-section">
         <h2 className="nes-text is-dark" style={{ marginBottom: '1rem' }}>Nos Offres</h2>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '1rem' }}>
+          <button className="nes-btn is-primary" onClick={() => toggleScroll(true)}>▶ Play</button>
+          <button className="nes-btn is-error" onClick={() => toggleScroll(false)}>⏸ Stop</button>
+        </div>
 
         <div className="home-marquee">
-          <div className="home-marquee-track">
-            {[...products, ...products].map((product) => (
-              <div
-                className="home-marquee-item"
-                key={`main-${product.id}-${Math.random()}`}
-              >
+          <div className={`home-marquee-track ${isScrolling ? '' : 'paused'}`}>
+            {[...products, ...products].map((product, index) => (
+              <div className="home-marquee-item" key={`scroll-${product.id}-${index}`}>
                 <ProductCard product={{ ...product, img: product.image }} />
               </div>
             ))}
@@ -110,12 +124,9 @@ export default function Home() {
         </div>
 
         <div className="home-marquee">
-          <div className="home-marquee-track reverse-track">
-            {[...products, ...products].map((product) => (
-              <div
-                className="home-marquee-item"
-                key={`rev-${product.id}-${Math.random()}`}
-              >
+          <div className={`home-marquee-track reverse-track ${isScrolling ? '' : 'paused'}`}>
+            {[...products, ...products].reverse().map((product, index) => (
+              <div className="home-marquee-item" key={`rev-${product.id}-${index}`}>
                 <ProductCard product={{ ...product, img: product.image }} />
               </div>
             ))}
@@ -209,6 +220,7 @@ export default function Home() {
           </div>
 
           <h2 className="nes-text is-primary">Ravivez la nostalgie</h2>
+          <h2 className="nes-text is-primary">Dépensez sans compter !</h2>
         </div>
       </section>
       <section

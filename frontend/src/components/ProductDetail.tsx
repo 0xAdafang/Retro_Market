@@ -4,6 +4,9 @@ import 'nes.css/css/nes.min.css';
 import '../index.css';
 
 interface Product {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  user_id: any;
+  username: string;
   id: number;
   title: string;
   price: number;
@@ -11,7 +14,7 @@ interface Product {
   image: string;
   user?: {
     id: number;
-    name: string;
+    username: string; 
   };
 }
 
@@ -88,10 +91,11 @@ async function handleAddToCart(productId: number) {
             <p className="product-description">{product.description}</p>
             <p className="product-seller">
               Vendu par :{' '}
-              <Link to={`/vendeur/${product.user?.id}`} className="seller-link">
-                <strong>{product.user?.name || 'Utilisateur inconnu'}</strong>
+              <Link to={`/vendeur/${product.user_id}`} className="seller-link">
+                <strong>{product.username || 'Utilisateur inconnu'}</strong>
               </Link>
             </p>
+
 
             <button
               className="nes-btn is-success"
@@ -108,11 +112,11 @@ async function handleAddToCart(productId: number) {
             )}
 
             <Link
-              to="/"
+              to="/onsale"
               className="nes-btn is-primary"
               style={{ marginTop: '1rem', display: 'inline-block' }}
             >
-              Retour à l'accueil
+              Retour
             </Link>
           </div>
         </div>

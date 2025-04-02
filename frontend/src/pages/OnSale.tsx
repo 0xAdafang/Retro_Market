@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
+import { useSearchParams } from "react-router-dom";
 import "nes.css/css/nes.min.css";
 import "../index.css";
 
@@ -15,6 +16,8 @@ interface Product {
 export default function OnSale() {
   const [products, setProducts] = useState<Product[]>([]);
   const [sort, setSort] = useState<string>("");
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search")?.toLowerCase() || "";
 
   useEffect(() => {
     fetch("/api/products")
@@ -45,6 +48,9 @@ export default function OnSale() {
     setProducts(sorted);
   };
 
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery)
+  );
   return (
     <main className="onsale-container">
       <h1 className="glitch-title onsale-title">
@@ -65,11 +71,11 @@ export default function OnSale() {
       </div>
 
       <div className="product-grid">
-        {products.map((product) => (
-          <div className="product-card-wrapper" key={product.id}>
-            <ProductCard product={{ ...product, img: product.image }} />
-          </div>
-        ))}
+      {filteredProducts.map((product) => (
+        <div className="product-card-wrapper" key={product.id}>
+          <ProductCard product={{ ...product, img: product.image }} />
+        </div>
+      ))}
       </div>
     </main>
   );

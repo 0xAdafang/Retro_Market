@@ -1,4 +1,5 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
+
 import {
   registerUser,
   loginUser,
@@ -12,7 +13,8 @@ import {
   getAllProducts,
   getProductById,
   deleteProduct,
-  getMyProducts,
+  getMyProduct,
+  getProductsBySeller,
 } from "../controllers/productController";
 import {
   addToCart,
@@ -20,6 +22,7 @@ import {
   removeFromCart,
   getCartCount,
   checkoutCart,
+  
 } from "../controllers/cartController";
 import {
   createOrder,
@@ -29,10 +32,17 @@ import {
   getAllOrders,
 } from "../controllers/orderController";
 import { pool } from "../db";
+import { requestPasswordReset, resetPasswordWithToken } from '../controllers/resetController';
 
 const router = express.Router();
 
-router.post("/register", registerUser);
+router.post("/register", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await registerUser(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
 router.post("/login", loginUser);
 router.get("/me", verifyToken, getProfile);
 router.put("/me", verifyToken, updateProfile);
@@ -43,6 +53,7 @@ router.get("/admin/check", verifyToken, isAdmin, (req, res) => {
 // Product Routes
 router.post("/products", verifyToken, createProduct);
 router.get("/products", getAllProducts);
+router.get("/products/seller/:id", getProductsBySeller);
 router.get("/products/:id", async (req: Request, res: Response) => {
   try {
     await getProductById(req, res);
@@ -55,7 +66,13 @@ router.get("/products/:id", async (req: Request, res: Response) => {
   }
 });
 router.delete("/products/:id", verifyToken, deleteProduct);
-router.get("/my-products", verifyToken, getMyProducts);
+router.get("/my-products", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await getMyProduct(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
 router.get("/my-products", verifyToken, async (req, res) => {
   try {
     const userId = (req.user as { userId: number }).userId;
@@ -86,4 +103,15 @@ router.get("/orders/:id", verifyToken, getOrderById);
 router.patch("/admin/orders/:id", verifyToken, isAdmin, updateOrderStatus);
 router.get("/admin/orders", verifyToken, isAdmin, getAllOrders);
 
+
+router.post("/reset-request", async (req: Request, res: Response, next: NextFunction) => {
+  await requestPasswordReset(req, res, next);
+});
+router.post('/reset/:token', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await resetPasswordWithToken(req, res, next);
+  } catch (error) {
+    next(error);
+  }
+});
 export default router;

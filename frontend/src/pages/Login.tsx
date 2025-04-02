@@ -1,80 +1,144 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "nes.css/css/nes.min.css";
+import loginBackground from "../assets/login.gif";
 
-export default function Login() {
-  const navigate = useNavigate();
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      const response = await fetch("/api/login", {
+      const res = await fetch("/api/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Erreur de connexion");
+      if (!res.ok) {
+        throw new Error(data.message || "Erreur lors de la connexion.");
       }
 
-      localStorage.setItem("token", data.token);
       toast.success("Connexion réussie !");
-      window.location.href = '/';
-    } catch (error) {
-      toast.error((error as Error).message);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      navigate("/");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      toast.error(err.message || "Erreur serveur.");
     }
   };
 
-  if (localStorage.getItem("token")) {
-    navigate("/");
-    return null;
-  }
+  const handleForgot = async () => {
+    const mail = prompt("Entrez votre email ou pseudo pour réinitialiser votre mot de passe :");
+
+    if (!mail) return;
+
+    try {
+      const res = await fetch("/api/reset-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ emailOrUsername: mail })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Une erreur est survenue.");
+      }
+
+      toast.success("Lien de réinitialisation envoyé par email !");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      toast.error(err.message || "Erreur lors de la demande.");
+    }
+  };
 
   return (
     <div
-      className="nes-container with-title is-centered"
-      style={{ maxWidth: "500px", margin: "2rem auto" }}
+      style={{
+        backgroundImage: `url(${loginBackground})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
-      <p className="title">Connexion</p>
-      <form onSubmit={handleSubmit}>
-        <div className="nes-field">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            className="nes-input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+      <div
+        className="nes-container is-rounded"
+        style={{
+          maxWidth: "400px",
+          padding: "2rem",
+          background: "#fff",
+          boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+        }}
+      >
+        <h2 className="title glitch" style={{ textAlign: "center" }}>
+          Connexion
+        </h2>
 
-        <div className="nes-field" style={{ marginTop: "1rem" }}>
-          <label htmlFor="password">Mot de passe</label>
-          <input
-            id="password"
-            type="password"
-            className="nes-input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        <form onSubmit={handleLogin}>
+          <div className="nes-field">
+            <label htmlFor="email" style={{ color: '#000' }}>Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              className="nes-input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="nes-btn is-primary"
-          style={{ marginTop: "1.5rem" }}
-        >
-          Se connecter
-        </button>
-      </form>
+          <div className="nes-field mt-3">
+            <label htmlFor="password" style={{ color: '#000' }}>Mot de passe</label>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              className="nes-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <label className="nes-checkbox mt-3">
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            <span style={{ marginLeft: 10 }}>Afficher le mot de passe</span>
+          </label>
+
+          <button type="submit" className="nes-btn is-primary mt-4" style={{ width: "100%" }}>
+            Se connecter
+          </button>
+
+          <p
+            onClick={handleForgot}
+            style={{ textAlign: "center", color: "#999", cursor: "pointer", marginTop: "1rem", fontSize: "0.8rem" }}
+          >
+            Mot de passe ou pseudo oublié ?
+          </p>
+        </form>
+      </div>
     </div>
   );
-}
+};
+
+export default Login;
