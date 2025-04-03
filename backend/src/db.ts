@@ -1,9 +1,9 @@
 import { Pool } from 'pg';
 
 export const pool = new Pool({
-  user: '***',
+  user: 'postgres',
   host: 'localhost',
   database: 'retrogame_market',
-  password: 'Aqwpmn963',
+  password: '$',
   port: 5432
 });
