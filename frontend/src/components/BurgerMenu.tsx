@@ -11,6 +11,7 @@ export default function BurgerMenu() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     toast.success('Déconnecté');
     navigate('/');
     window.location.reload();
@@ -22,7 +23,7 @@ export default function BurgerMenu() {
       opacity: 1,
       y: 0,
       transition: { delay: i * 0.1 },
-    })
+    }),
   };
 
   return (
@@ -53,42 +54,45 @@ export default function BurgerMenu() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              boxShadow: '0 0 0 2px white inset'
+              boxShadow: '0 0 0 2px white inset',
             }}
           >
-            {[<Link to="/" className="nes-btn is-primary">Accueil</Link>,
+            {[ 
+              <Link to="/" className="nes-btn is-primary">Accueil</Link>,
               token && (
-                <button
+                <Link
+                  to="/my-products"
                   className="nes-btn is-success"
-                  onClick={() => {
-                    const user = JSON.parse(localStorage.getItem("user") || "{}");
-                    if (user.id) {
-                      navigate(`/vendeur/${user.id}`);
-                      setOpen(false);
-                    }
-                  }}
+                  onClick={() => setOpen(false)}
                 >
-                  Ma boutique
-                </button>
+                  Mes produits
+                </Link>
               ),
               token && <Link to="/new-product" className="nes-btn is-warning">Mettre en vente</Link>,
               token && <Link to="/orders" className="nes-btn is-success">Mes commandes</Link>,
               token && <button onClick={handleLogout} className="nes-btn is-error">Déconnexion</button>,
               !token && <Link to="/login" className="nes-btn">Connexion</Link>,
-              !token && <Link to="/register" className="nes-btn">Inscription</Link>
-            ].filter(Boolean).map((element, i) => (
-              <motion.div
-                key={i}
-                custom={i}
-                variants={menuVariants}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                style={{ marginBottom: '0.5rem', fontSize: '0.6rem', width: '100%', textAlign: 'center' }}
-              >
-                {element}
-              </motion.div>
-            ))}
+              !token && <Link to="/register" className="nes-btn">Inscription</Link>,
+            ]
+              .filter(Boolean)
+              .map((element, i) => (
+                <motion.div
+                  key={i}
+                  custom={i}
+                  variants={menuVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  style={{
+                    marginBottom: '0.5rem',
+                    fontSize: '0.6rem',
+                    width: '100%',
+                    textAlign: 'center',
+                  }}
+                >
+                  {element}
+                </motion.div>
+              ))}
           </motion.div>
         )}
       </AnimatePresence>

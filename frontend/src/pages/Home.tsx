@@ -97,8 +97,8 @@ export default function Home() {
         <p className="hero-subtitle">▼ En un clic ▼</p>
 
         <div className="home-buttons">
-          <button className="nes-btn is-success" onClick={() => navigate("/onsale")}>Acheter</button>
-          <button className="nes-btn is-warning" onClick={() => navigate("/new")}>Vendre</button>
+          <button className="nes-btn" onClick={() => navigate("/onsale")}>Acheter</button>
+          <button className="nes-btn is-warning" onClick={() => navigate("new-product")}>Vendre</button>
         </div>
       </div>
 

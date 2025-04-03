@@ -13,6 +13,7 @@ import {
   getAllProducts,
   getProductById,
   deleteProduct,
+  getProductsByUserId,
   getMyProduct,
   getProductsBySeller,
 } from "../controllers/productController";
@@ -54,18 +55,22 @@ router.get("/admin/check", verifyToken, isAdmin, (req, res) => {
 router.post("/products", verifyToken, createProduct);
 router.get("/products", getAllProducts);
 router.get("/products/seller/:id", getProductsBySeller);
-router.get("/products/:id", async (req: Request, res: Response) => {
+
+router.delete("/products/:id", verifyToken, deleteProduct);
+router.get("/products/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
     await getProductById(req, res);
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error";
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: errorMessage });
+    next(error);
   }
 });
-router.delete("/products/:id", verifyToken, deleteProduct);
+router.get("/products/user/:id", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await getProductsByUserId(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
 router.get("/my-products", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
   try {
     await getMyProduct(req, res);

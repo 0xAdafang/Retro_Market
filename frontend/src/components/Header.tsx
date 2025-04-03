@@ -6,18 +6,42 @@ import 'nes.css/css/nes.min.css';
 
 export default function Header() {
   const [user, setUser] = useState<{ email?: string; username?: string } | null>(null);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        setUser({ email: payload.email, username: payload.username });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (e) {
-        console.warn('Token invalide');
+    const loadUser = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          setUser({ email: payload.email, username: payload.username });
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (e) {
+          console.warn('Token invalide');
+        }
+      } else {
+        setUser(null);
       }
-    }
+    };
+  
+    const loadCartTotal = () => {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      if (Array.isArray(cart)) {
+        const sum = cart.reduce((acc, item) => acc + (parseFloat(item.price) || 0), 0);
+        setTotal(sum);
+      }
+    };
+  
+    loadUser();
+    loadCartTotal();
+  
+    const interval = setInterval(loadCartTotal, 1000); // vérifie toutes les 1 secondes
+    window.addEventListener('authChange', loadUser);
+  
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('authChange', loadUser);
+    };
   }, []);
 
   return (
@@ -39,16 +63,17 @@ export default function Header() {
           <Link to="/" className="glitch-link">Retro_Market</Link>
         </h1>
       </div>
+
       <nav
         style={{
           display: 'flex',
           gap: '0.3rem',
           alignItems: 'center',
           flexWrap: 'wrap',
-          marginRight: '0.5rem'
+          marginRight: '0.5rem',
         }}
       >
-       <div className="nes-field" style={{ marginRight: '0.75rem' }}>
+        <div className="nes-field" style={{ marginRight: '0.75rem' }}>
           <label
             htmlFor="search_field"
             style={{
@@ -76,17 +101,34 @@ export default function Header() {
             }}
           />
         </div>
-        <div className="nes-balloon from-left nes-pointer"
-          style={{
-            margin: '0 4px',
-            fontSize: '0.6rem',
-            color: '#222',
-          }}>
+
+        <div
+          className="nes-balloon from-left nes-pointer"
+          style={{ margin: '0 4px', fontSize: '0.6rem', color: '#222' }}
+        >
           Bonjour, {user?.username || 'visiteur'}
         </div>
-        <Link to="/cart" className="nes-btn is-warning" style={{ fontSize: '0.65rem' }}>
-          <ShoppingCart size={14} style={{ marginRight: '3px' }} />Panier
-        </Link>
+
+        <Link
+  to="/cart"
+  className="nes-btn is-warning"
+  style={{
+    fontSize: '0.65rem',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    minWidth: '110px',
+    justifyContent: 'space-between',
+  }}
+>
+  <ShoppingCart size={14} /> Panier
+  {total > 0 && (
+    <span style={{ fontSize: '0.7rem', color: '#fff', fontWeight: 'bold', marginLeft: '4px' }}>
+      ({total.toFixed(2)} $)
+    </span>
+  )}
+</Link>
+
         {user ? (
           <BurgerMenu />
         ) : (

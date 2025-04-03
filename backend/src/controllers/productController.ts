@@ -126,5 +126,26 @@ export const getProductsBySeller = async (req: Request, res: Response) => {
   }
 };
 
+export const getProductsByUserId = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query(
+      `SELECT products.*, users.username 
+       FROM products 
+       JOIN users ON users.id = products.user_id 
+       WHERE users.id = $1
+       ORDER BY products.id DESC`,
+      [id]
+    );
+
+    return res.status(200).json(result.rows); // <- c’est bien un tableau ici
+  } catch (error) {
+    console.error("Erreur récupération produits de l'utilisateur :", error);
+    return res.status(500).json({ error: "Erreur serveur" });
+  }
+};
+
+
 
 

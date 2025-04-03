@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import 'nes.css/css/nes.min.css';
 
 export default function Footer() {
@@ -8,7 +9,7 @@ export default function Footer() {
         backgroundColor: '#282d32',
         padding: '1rem 0',
         color: '#f0f9ff',
-        width: '100vw', // 👈 corrige les coupures
+        width: '100vw',
         maxWidth: '100%',
         fontSize: '0.7rem',
         zIndex: 10,
@@ -27,16 +28,16 @@ export default function Footer() {
         <div>
           <h3 style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>Services</h3>
           <ul style={{ listStyle: 'none', padding: 0, lineHeight: 1.4 }}>
-            <li><a href="#">Acheter</a></li>
-            <li><a href="#">Vendre</a></li>
-            <li><a href="#">Suivre une commande</a></li>
+            <li><Link to="/onsale">Acheter</Link></li>
+            <Link to="/new-product">Vendre</Link>
+            <li><Link to="/myproducts">Mes produits</Link></li>
           </ul>
         </div>
 
         <div>
           <h3 style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>À propos</h3>
           <ul style={{ listStyle: 'none', padding: 0, lineHeight: 1.4 }}>
-            <li><a href="#">Notre équipe</a></li>
+            <li><a href="/#equipe">Notre équipe</a></li>
             <li><a href="#">Mentions légales</a></li>
             <li><a href="#">Conditions</a></li>
           </ul>
@@ -50,10 +51,12 @@ export default function Footer() {
         </div>
 
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            <a href="#"><i className="nes-icon facebook"></i></a>
-            <a href="#"><i className="nes-icon github"></i></a>
-            <a href="#"><i className="nes-icon instagram"></i></a>
-            </div>
+          <a href="#"><i className="nes-icon facebook"></i></a>
+          <a href="https://github.com/0xAdafang" target="_blank" rel="noreferrer">
+            <i className="nes-icon github"></i>
+          </a>
+          <a href="#"><i className="nes-icon instagram"></i></a>
+        </div>
       </div>
 
       <p style={{ textAlign: 'center', marginTop: '1rem', opacity: 0.3 }}>

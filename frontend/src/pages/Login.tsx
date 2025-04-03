@@ -22,6 +22,7 @@ const Login = () => {
       });
 
       const data = await res.json();
+      console.log("🔍 Données de connexion :", data);
 
       if (!res.ok) {
         throw new Error(data.message || "Erreur lors de la connexion.");
@@ -30,6 +31,7 @@ const Login = () => {
       toast.success("Connexion réussie !");
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+      window.dispatchEvent(new Event("authChange"));
       navigate("/");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

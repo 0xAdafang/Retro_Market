@@ -4,24 +4,20 @@ import 'nes.css/css/nes.min.css';
 import '../index.css';
 
 interface Product {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  user_id: any;
+  user_id: number;
   username: string;
   id: number;
   title: string;
   price: number;
   description: string;
   image: string;
-  user?: {
-    id: number;
-    username: string; 
-  };
 }
 
 export default function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const currentUser = JSON.parse(localStorage.getItem("user") || "null");
 
   useEffect(() => {
     fetch(`/api/products/${id}`)
@@ -37,27 +33,32 @@ export default function ProductDetail() {
       });
   }, [id]);
 
-async function handleAddToCart(productId: number) {
-  try {
-    const token = localStorage.getItem('token'); // ← récupère le token
-    const res = await fetch(`/api/cart/${productId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`, // ← ajoute le token
-      },
-      body: JSON.stringify({ productId }),
-    });
+  async function handleAddToCart(productId: number) {
+    if (product?.user_id === currentUser?.id) {
+      setMessage("⚠️ Vous ne pouvez pas ajouter votre propre produit.");
+      return;
+    }
 
-    if (!res.ok) throw new Error('Erreur ajout au panier');
-    const data = await res.json();
-    setMessage('Produit ajouté au panier !');
-    console.log('✅ Produit ajouté :', data);
-  } catch (err) {
-    console.error(err);
-    setMessage('Erreur lors de l’ajout au panier.');
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`/api/cart/${productId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ productId }),
+      });
+
+      if (!res.ok) throw new Error('Erreur ajout au panier');
+      const data = await res.json();
+      setMessage('Produit ajouté au panier !');
+      console.log('Produit ajouté :', data);
+    } catch (err) {
+      console.error(err);
+      setMessage('❌ Erreur lors de l’ajout au panier.');
+    }
   }
-}
 
   if (!product)
     return (
@@ -96,14 +97,15 @@ async function handleAddToCart(productId: number) {
               </Link>
             </p>
 
-
-            <button
-              className="nes-btn is-success"
-              style={{ marginTop: '1rem' }}
-              onClick={() => handleAddToCart(product.id)}
-            >
-              Ajouter au panier
-            </button>
+            {product.user_id !== currentUser?.id && (
+              <button
+                className="nes-btn is-success"
+                style={{ marginTop: '1rem' }}
+                onClick={() => handleAddToCart(product.id)}
+              >
+                Ajouter au panier
+              </button>
+            )}
 
             {message && (
               <p className="nes-text" style={{ marginTop: '1rem' }}>
