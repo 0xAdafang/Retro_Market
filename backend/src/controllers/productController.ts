@@ -26,12 +26,14 @@ export const getAllProducts = async (req: Request, res: Response) => {
     const result = await pool.query(
       `SELECT products.*, users.username 
        FROM products 
-       JOIN users ON users.id = products.user_id`
+       JOIN users ON products.user_id = users.id
+       WHERE products.is_available = true
+       ORDER BY products.id DESC`
     );
 
     res.status(200).json(result.rows);
   } catch (error) {
-    console.error("Erreur récupération des produits :", error);
+    console.error("Erreur récupération produits :", error);
     res.status(500).json({ error: "Erreur serveur" });
   }
 };

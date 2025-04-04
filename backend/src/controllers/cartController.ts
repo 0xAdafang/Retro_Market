@@ -98,4 +98,19 @@ export const checkoutCart = async (req: Request, res: Response): Promise<void> =
   }
 };
 
+export const clearCart = async (req: Request, res: Response): Promise<void> => {
+  const userId = req.user?.userId;
 
+  if (!userId) {
+    res.status(401).json({ error: "Non autorisé" });
+    return;
+  }
+
+  try {
+    await pool.query("DELETE FROM cart_items WHERE user_id = $1", [userId]);
+    res.status(200).json({ message: "Panier vidé avec succès" });
+  } catch (error) {
+    console.error("Erreur lors du vidage du panier :", error);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+};

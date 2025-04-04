@@ -30,7 +30,7 @@ export const requestPasswordReset = async (
     const token = uuidv4();
     const expiresAt = new Date(Date.now() + 1000 * 60 * 60); // 1h
 
-    // 2. Insérer le token dans password_resets
+    
     await pool.query(
       "INSERT INTO password_resets (user_id, token, expires_at) VALUES ($1, $2, $3)",
       [user.id, token, expiresAt]
@@ -39,7 +39,7 @@ export const requestPasswordReset = async (
     console.log("→ EMAIL_USER:", process.env.EMAIL_USER);
     console.log("→ EMAIL_PASS:", process.env.EMAIL_PASS ? "OK" : "MISSING");
     console.log("→ Target Email:", user.email);
-    // 3. Configurer le transporteur
+    
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -48,7 +48,7 @@ export const requestPasswordReset = async (
       },
     });
 
-    // 4. Envoyer le mail
+  
     const resetLink = `http://localhost:5173/reset/${token}`; // à adapter si déployé
 
     try {
@@ -102,7 +102,7 @@ export const resetPasswordWithToken = async (
         return res.status(400).json({ message: "Token invalide ou expiré." });
       }
 
-      // Hash the new password
+     
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
       await pool.query(
@@ -115,7 +115,7 @@ export const resetPasswordWithToken = async (
         [token]
       );
   
-      // Redundant db operations removed as pool.query is used for database interactions
+     
   
       return res.status(200).json({ message: "Mot de passe réinitialisé avec succès." });
     } catch (err) {

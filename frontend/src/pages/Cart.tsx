@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'nes.css/css/nes.min.css';
+import commandeGif from '../assets/commande.gif';
 
 interface CartItem {
   id: number;
@@ -61,13 +62,45 @@ export default function CartPage() {
     }
   };
 
-  const total = items.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
+  const handleCheckout = () => {
+    navigate('/checkout');
+  };
 
   return (
-    <div className="cart-wrapper">
-      <div className="cart-box nes-container is-rounded with-title">
-        <p className="title cart-title">Mon Panier</p>
-  
+    <div
+      className="cart-wrapper"
+      style={{
+        backgroundImage: `url(${commandeGif})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        padding: '3rem 1rem',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+      }}
+    >
+      <div
+        className="cart-box nes-container is-rounded with-title"
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          color: 'white',
+          width: '100%',
+          maxWidth: '800px',
+        }}
+      >
+        <p
+          className="title"
+          style={{
+            color: '#000',
+            backgroundColor: 'transparent', 
+            marginBottom: '1rem',
+            textAlign: 'center',
+          }}
+        >
+          Mon Panier
+        </p>
+
         {items.length === 0 ? (
           <p className="nes-text is-warning">Votre panier est vide.</p>
         ) : (
@@ -84,11 +117,13 @@ export default function CartPage() {
               {items.map((item) => (
                 <li
                   key={item.id}
-                  className="nes-container is-rounded cart-item"
+                  className="nes-container is-rounded"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '1rem',
+                    backgroundColor: '#fff',
+                    color: 'black',
                   }}
                 >
                   <img
@@ -114,15 +149,10 @@ export default function CartPage() {
                 </li>
               ))}
             </ul>
-  
-            <div style={{ marginTop: '1rem', textAlign: 'right' }}>
-              <p className="nes-text">Total : {total.toFixed(2)} $</p>
-              <button
-                className="nes-btn is-primary"
-                style={{ marginTop: '1rem' }}
-                onClick={() => navigate('/checkout')}
-              >
-                Valider ma commande
+
+            <div style={{ textAlign: 'right', marginTop: '2rem' }}>
+              <button className="nes-btn is-primary" onClick={handleCheckout}>
+                Valider la commande
               </button>
             </div>
           </>
@@ -130,5 +160,4 @@ export default function CartPage() {
       </div>
     </div>
   );
-  
 }

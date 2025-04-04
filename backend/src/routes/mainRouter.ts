@@ -23,6 +23,7 @@ import {
   removeFromCart,
   getCartCount,
   checkoutCart,
+  clearCart,
   
 } from "../controllers/cartController";
 import {
@@ -100,6 +101,7 @@ router.get("/cart", verifyToken, getCart);
 router.delete("/cart/:id", verifyToken, removeFromCart);
 router.get("/cart-count", verifyToken, getCartCount);
 router.post("/cart/checkout", verifyToken, checkoutCart);
+router.delete("/cart/clear", verifyToken, clearCart);
 
 // Orders
 router.post("/orders", verifyToken, createOrder);

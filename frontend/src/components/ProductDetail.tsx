@@ -18,6 +18,7 @@ export default function ProductDetail() {
   const [product, setProduct] = useState<Product | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const currentUser = JSON.parse(localStorage.getItem("user") || "null");
+  console.log("Contenu du panier :", JSON.parse(localStorage.getItem("cart") || "[]"));
 
   useEffect(() => {
     fetch(`/api/products/${id}`)
