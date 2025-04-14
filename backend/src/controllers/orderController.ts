@@ -49,8 +49,9 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
         [product.id]
       );
     }
-
+    await client.query("DELETE FROM cart_items WHERE user_id = $1", [userId])
     await client.query("COMMIT");
+
     res.status(201).json({ message: "Commande créée avec succès" });
   } catch (error) {
     await client.query("ROLLBACK");
