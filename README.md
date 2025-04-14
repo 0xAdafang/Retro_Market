@@ -42,6 +42,16 @@
 
 ---
 
+## À venir
+Système de wishlist
+
+Notifications en temps réel
+
+Système de notation/commentaire
+
+## Licence
+Ce projet est sous licence MIT. Libre à vous de l’adapter, mais mentionnez l’auteur original si vous le reprenez.
+
 ## lancer le projet
 
 
@@ -70,12 +80,7 @@ cd frontend
 npm install
 npm run dev
 
-## À venir
-Système de wishlist
 
-Notifications en temps réel
-
-Système de notation/commentaire
 
 Interface d’administration complète
 
