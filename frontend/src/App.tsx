@@ -24,6 +24,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'nes.css/css/nes.min.css';
 import SellerShop from './pages/SellerShop';
 import EditProduct from './pages/EditProduct';
+import ConfirmEmail from "./pages/ConfirmEmail.tsx";
 
 function App() {
   return (
@@ -90,6 +91,8 @@ function App() {
               <Route path="/vendeur/:id" element={<SellerShop />} />
               <Route path="/edit/:id" element={<EditProduct />} />
               <Route path="/my-products" element={<MyProducts />} />
+              <Route path="/confirm-email/:token" element={<ConfirmEmail />} />
+
 
           </Routes>
         </div>

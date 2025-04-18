@@ -6,6 +6,7 @@ import sendConfirmationEmail  from '../services/sendConfirmationEmail'
 
 const JWT_SECRET = 'my_super_secret';
 
+
 export const registerUser = async (req: Request, res: Response) => {
   const { email, password, username, prenom, nom, genre } = req.body;
 

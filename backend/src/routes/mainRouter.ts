@@ -35,6 +35,7 @@ import {
 } from "../controllers/orderController";
 import { pool } from "../db";
 import { requestPasswordReset, resetPasswordWithToken } from '../controllers/resetController';
+import jwt, {JwtPayload} from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -122,5 +123,19 @@ router.post('/reset/:token', async (req: Request, res: Response, next: NextFunct
   }
 });
 
+const JWT_SECRET = 'my_super_secret';
+router.get('/confirm/:token', async (req, res) => {
+
+  try {
+    const decoded = jwt.verify(req.params.token, JWT_SECRET) as JwtPayload;
+
+    const userId = decoded.userId;
+    await pool.query('UPDATE users SET is_verified = TRUE WHERE id = $1', [userId]);
+
+    res.status(200).json({ message: 'Compte confirmé avec succès.' });
+  } catch (error) {
+    res.status(400).json({ message: 'Lien invalide ou expiré.' });
+  }
+});
 
 export default router;

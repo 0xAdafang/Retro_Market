@@ -6,7 +6,6 @@ const transporter = nodemailer.createTransport({
     ignoreTLS: true
 });
 
-console.log(process.env.FRONTEND_URL);
 const sendConfirmationEmail = async (email: string, token: string) => {
     const confirmUrl = `${process.env.FRONTEND_URL}/confirm-email/${token}`;
     const mailOptions = {
