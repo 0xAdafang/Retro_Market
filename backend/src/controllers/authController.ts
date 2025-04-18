@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { pool } from '../db';
+import sendConfirmationEmail  from '../services/sendConfirmationEmail'
 
 const JWT_SECRET = 'my_super_secret';
 
@@ -24,12 +25,19 @@ export const registerUser = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await pool.query(
+    const user = await pool.query(
       `INSERT INTO users (email, password, username, prenom, nom, genre)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
       [email, hashedPassword, username, prenom, nom, genre]
     );
 
+    const token = jwt.sign(
+        { userId: user.rows[0].id },
+        JWT_SECRET,
+        { expiresIn: '1d' }
+    );
+
+    await sendConfirmationEmail(email, token);
     res.status(201).json({ message: 'Utilisateur créé avec succès' });
   } catch (error) {
     console.error('Erreur register :', error);
@@ -68,6 +76,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({
       message: "Login successful",
       token,
+
       user: {
         id: user.id,
         username: user.username,
