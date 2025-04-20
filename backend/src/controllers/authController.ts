@@ -70,6 +70,13 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    if (!user.is_verified){
+      res.status(401).json({ message: 'Votre compte n\'est pas activé, veuillez vérifier votre courriel.' });
+      return;
+    }
+
+
+
     const token = jwt.sign({ userId: user.id, email: user.email, username: user.username }, JWT_SECRET, {
       expiresIn: '24h'
     });
