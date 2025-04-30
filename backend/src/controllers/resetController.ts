@@ -31,9 +31,16 @@ export const requestPasswordReset = async (
     const expiresAt = new Date(Date.now() + 1000 * 60 * 60); // 1h
 
     
+<<<<<<< HEAD
+    const createdAt = new Date();
+    await pool.query(
+      "INSERT INTO password_resets (user_id, token, expires_at, created_at) VALUES ($1, $2, $3, $4)",
+      [user.id, token, expiresAt, createdAt]
+=======
     await pool.query(
       "INSERT INTO password_resets (user_id, token, expires_at) VALUES ($1, $2, $3)",
       [user.id, token, expiresAt]
+>>>>>>> e7d0db3cc0cc2b7e0efcb4cc0f61ffb2c1989056
     );
     console.log("→ TOKEN:", token);
     console.log("→ EMAIL_USER:", process.env.EMAIL_USER);
