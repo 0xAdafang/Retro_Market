@@ -102,7 +102,6 @@ export default function OnSale() {
           <div className="product-card-wrapper" key={product.id}>
             <ProductCard product={{ ...product, img: product.image }} />
 
-<<<<<<< HEAD
             {typeof user?.id === "number" && user.id === product.userId && (
             <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
               <button
@@ -119,24 +118,6 @@ export default function OnSale() {
               </button>
             </div>
           )}
-=======
-            {user?.id === product.userId && (
-              <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
-                <button
-                  className="nes-btn is-warning"
-                  onClick={() => navigate(`/edit/${product.id}`)}
-                >
-                  Modifier
-                </button>
-                <button
-                  className="nes-btn is-error"
-                  onClick={() => handleDelete(product.id)}
-                >
-                  Supprimer
-                </button>
-              </div>
-            )}
->>>>>>> e7d0db3cc0cc2b7e0efcb4cc0f61ffb2c1989056
           </div>
         ))}
       </div>

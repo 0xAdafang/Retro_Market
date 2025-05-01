@@ -4,6 +4,6 @@ export const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'retrogame_market',
-  password: '$',
+  password: 'A',
   port: 5432
 });
