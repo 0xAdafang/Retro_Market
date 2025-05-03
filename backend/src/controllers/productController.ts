@@ -141,7 +141,7 @@ export const getProductsByUserId = async (req: Request, res: Response) => {
       [id]
     );
 
-    return res.status(200).json(result.rows); // <- c’est bien un tableau ici
+    return res.status(200).json(result.rows); 
   } catch (error) {
     console.error("Erreur récupération produits de l'utilisateur :", error);
     return res.status(500).json({ error: "Erreur serveur" });
