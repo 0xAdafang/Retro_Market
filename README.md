@@ -1,11 +1,11 @@
-Retro Market
+# Retro Market
 
 **Retro Market** est une marketplace de jeux vidéo rétro, inspirée par l’esthétique des consoles NES et des visuels cyber-néon.  
 Le projet combine un **backend robuste en TypeScript avec une base de données PostgreSQL**, et un **frontend dynamique** construit avec **React, TailwindCSS et Framer Motion**.
 
 ---
 
-Fonctionnalités
+## Fonctionnalités
 
 Côté utilisateur
 - Navigation dans des produits rétro via une interface personnalisée
@@ -14,7 +14,7 @@ Côté utilisateur
 - Animation orbitale autour du slogan (inspirée du site *The Graph*)
 - Entièrement responsive et animé grâce à **TailwindCSS + Framer Motion**
 
-Backend (Node.js + Express + PostgreSQL)
+## Backend (Node.js + Express + PostgreSQL)
 - Authentification sécurisée (**JWT + bcrypt**)
 - Création et gestion de compte utilisateur
 - Gestion des produits (CRUD)
@@ -22,13 +22,13 @@ Backend (Node.js + Express + PostgreSQL)
 - Réinitialisation de mot de passe via Gmail (**Nodemailer**)
 - Base de données relationnelle PostgreSQL
 
-Admin (bientôt disponible)
+## Admin (bientôt disponible)
 - Dashboard pour ajouter, modifier et supprimer des produits
 - Visualiser et gérer les commandes
 
 ---
 
-🛠Stack Technique
+## Stack Technique
 
 | Couche     | Technologie             | Détails                             |
 |------------|--------------------------|--------------------------------------|
@@ -43,7 +43,7 @@ Admin (bientôt disponible)
 
 ---
 
-Fonctionnalités à venir
+## Fonctionnalités à venir
 
 - Système de wishlist (favoris)
 - Notifications en temps réel
@@ -51,14 +51,14 @@ Fonctionnalités à venir
 
 ---
 
-Licence
+## Licence
 
 Ce projet est sous licence **MIT**.  
 Vous êtes libre de l’utiliser, le modifier et le partager, tant que vous mentionnez l’auteur original.
 
 ---
 
-Exécution en local
+## Exécution en local
 
 ### Prérequis
 - Node.js
@@ -106,7 +106,7 @@ npm run dev
 
 ---
 
-## 🛠Tech Stack
+## Tech Stack
 
 | Layer     | Technology            | Details                          |
 |-----------|------------------------|----------------------------------|
