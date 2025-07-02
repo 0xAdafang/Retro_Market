@@ -1,87 +1,89 @@
 # 🎮 Retro Market
 
-**Retro Market** est une marketplace de jeux vidéo rétro, inspirée par l’esthétique des consoles NES et des visuels cyber-néon.  
-Le projet combine un **backend robuste en TypeScript avec une base de données PostgreSQL**, et un **frontend dynamique** construit avec **React, TailwindCSS et Framer Motion**.
+**Retro Market** is a retro video game marketplace inspired by the aesthetic of NES consoles and cyber-neon visuals.  
+The project combines a **robust TypeScript backend with a PostgreSQL database**, and a **dynamic frontend** built with **React, TailwindCSS, and Framer Motion**.
+
+> ⚠️ *Please note: The application is in French to reflect its localized context.*
 
 ---
 
-## 🖼️ Aperçu visuel
+## 🖼️ Visual Preview
 
-![Accueil](./images/1.JPG)
+![Home](./images/1.JPG)
 
 ---
 
-## Fonctionnalités
+## Features
 
-### 👾 Côté utilisateur
-- Navigation dans des produits rétro via une interface personnalisée
-- Panier dynamique avec gestion des quantités
-- Formulaire de commande (nom, adresse, méthode de paiement factice, etc.)
-- Animation orbitale autour du slogan (inspirée du site *The Graph*)
-- Entièrement responsive et animé grâce à **TailwindCSS + Framer Motion**
+### 👾 User Side
+- Browse retro products through a custom interface
+- Dynamic cart with quantity management
+- Order form (name, address, fake payment method, etc.)
+- Orbital animation around the slogan (inspired by *The Graph* website)
+- Fully responsive and animated thanks to **TailwindCSS + Framer Motion**
 
-![Fonctionnalité](./images/2.JPG)
+![Feature](./images/2.JPG)
 
 ---
 
 ## ⚙️ Backend (Node.js + Express + PostgreSQL)
-- Authentification sécurisée (**JWT + bcrypt**)
-- Création et gestion de compte utilisateur
-- Gestion des produits (CRUD)
-- Commandes, paniers et historique d’achats
-- Réinitialisation de mot de passe via Gmail (**Nodemailer**)
-- Base de données relationnelle PostgreSQL
+- Secure authentication (**JWT + bcrypt**)
+- User account creation and management
+- Product management (CRUD)
+- Orders, carts, and purchase history
+- Password reset via Gmail (**Nodemailer**)
+- Relational PostgreSQL database
 
-![Base de données](./images/E.jpg)
-
----
-
-## 🛠️ Admin (bientôt disponible)
-- Dashboard pour ajouter, modifier et supprimer des produits
-- Visualiser et gérer les commandes
-
-![Dashboard admin](./images/Z.JPG)
+![Database](./images/E.jpg)
 
 ---
 
-## 🧱 Stack Technique
+## 🛠️ Admin (Coming Soon)
+- Dashboard to add, edit, and delete products
+- View and manage orders
 
-| Couche     | Technologie             | Détails                             |
+![Admin Dashboard](./images/Z.JPG)
+
+---
+
+## 🧱 Tech Stack
+
+| Layer      | Technology              | Details                              |
 |------------|--------------------------|--------------------------------------|
-| Frontend   | React                    | SPA avec composants réactifs         |
-| UI         | TailwindCSS + NES.css    | Style rétro pixel art                |
-| Animations | Framer Motion            | Transitions et effets fluides        |
-| Auth       | JWT + bcrypt             | Système de connexion sécurisé        |
-| Backend    | Node.js + Express        | API RESTful                          |
-| ORM        | Prisma                   | Mapping BDD avec PostgreSQL          |
-| Base de données | PostgreSQL         | Stockage relationnel optimisé        |
-| Emails     | Nodemailer + Gmail       | Système de réinitialisation de mot de passe |
+| Frontend   | React                    | SPA with reactive components         |
+| UI         | TailwindCSS + NES.css    | Retro pixel art styling              |
+| Animations | Framer Motion            | Smooth transitions and effects       |
+| Auth       | JWT + bcrypt             | Secure login system                  |
+| Backend    | Node.js + Express        | RESTful API                          |
+| ORM        | Prisma                   | DB mapping with PostgreSQL           |
+| Database   | PostgreSQL               | Optimized relational storage         |
+| Emails     | Nodemailer + Gmail       | Password reset system                |
 
 ---
 
-## 📅 Fonctionnalités à venir
+## 📅 Upcoming Features
 
-- Système de wishlist (favoris)
-- Notifications en temps réel
-- Système de notation et d’avis produits
-
----
-
-## 📄 Licence
-
-Ce projet est sous licence **MIT**.  
-Vous êtes libre de l’utiliser, le modifier et le partager, tant que vous mentionnez l’auteur original.
+- Wishlist (favorites) system  
+- Real-time notifications  
+- Product rating and review system  
 
 ---
 
-## 🚀 Exécution en local
+## 📄 License
 
-### 🧰 Prérequis
-- Node.js
-- PostgreSQL
-- Yarn ou npm
+This project is licensed under the **MIT License**.  
+You are free to use, modify, and share it as long as you credit the original author.
 
-### ⚙️ Installation du backend
+---
+
+## 🚀 Run Locally
+
+### 🧰 Prerequisites
+- Node.js  
+- PostgreSQL  
+- Yarn or npm  
+
+### ⚙️ Backend Installation
 ```bash
 cd backend
 npm install
