@@ -17,6 +17,7 @@ interface Product {
 
 export default function OnSale() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [displayedProducts, setDisplayedProducts] = useState<Product[]>([]);
   const [sort, setSort] = useState<string>("");
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search")?.toLowerCase() || "";
@@ -26,13 +27,16 @@ export default function OnSale() {
   useEffect(() => {
     fetch("/api/products")
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then((data) => {
+        setProducts(data);
+        setDisplayedProducts(data);
+      })
       .catch((err) => console.error("Erreur chargement produits:", err));
   }, []);
 
   const handleSort = (value: string) => {
     setSort(value);
-    const sorted = [...products];
+    let sorted = [...products];
     switch (value) {
       case "price-asc":
         sorted.sort((a, b) => a.price - b.price);
@@ -47,9 +51,10 @@ export default function OnSale() {
         sorted.sort((a, b) => b.title.localeCompare(a.title));
         break;
       default:
+        sorted = [...products]; // reset to original
         break;
     }
-    setProducts(sorted);
+    setDisplayedProducts(sorted);
   };
 
   const handleDelete = async (id: number) => {
@@ -67,6 +72,7 @@ export default function OnSale() {
       if (res.ok) {
         toast.success("Produit supprimé !");
         setProducts((prev) => prev.filter((p) => p.id !== id));
+        setDisplayedProducts((prev) => prev.filter((p) => p.id !== id));
       } else {
         toast.error("Erreur lors de la suppression");
       }
@@ -76,7 +82,7 @@ export default function OnSale() {
     }
   };
 
-  const filteredProducts = products.filter((product) =>
+  const filteredProducts = displayedProducts.filter((product) =>
     product.title.toLowerCase().includes(searchQuery)
   );
 
@@ -97,29 +103,51 @@ export default function OnSale() {
         </div>
       </div>
 
-      <div className="product-grid">
-        {filteredProducts.map((product) => (
-          <div className="product-card-wrapper" key={product.id}>
-            <ProductCard product={{ ...product, img: product.image }} />
+      <p style={{ margin: "1rem 0" }} className="nes-text is-success">
+        {filteredProducts.length} produit(s) trouvé(s)
+      </p>
 
-            {typeof user?.id === "number" && user.id === product.userId && (
-            <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
-              <button
-                className="nes-btn is-warning"
-                onClick={() => navigate(`/edit/${product.id}`)}
-              >
-                Modifier
-              </button>
-              <button
-                className="nes-btn is-error"
-                onClick={() => handleDelete(product.id)}
-              >
-                Supprimer
-              </button>
+      <div className="product-grid">
+        {filteredProducts.length === 0 ? (
+          <p className="nes-text is-warning">Aucun produit trouvé.</p>
+        ) : (
+          filteredProducts.map((product) => (
+            <div className="product-card-wrapper" key={product.id} style={{ position: "relative", transition: "transform 0.2s" }}>
+              <ProductCard product={{ ...product, img: product.image }} />
+              {user?.id === product.userId && (
+                <span style={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                  background: "#212529",
+                  color: "white",
+                  padding: "2px 6px",
+                  fontSize: "0.7rem",
+                  borderRadius: "4px"
+                }}>
+                  👤 Vous
+                </span>
+              )}
+
+              {typeof user?.id === "number" && user.id === product.userId && (
+                <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
+                  <button
+                    className="nes-btn is-warning"
+                    onClick={() => navigate(`/edit/${product.id}`)}
+                  >
+                    Modifier
+                  </button>
+                  <button
+                    className="nes-btn is-error"
+                    onClick={() => handleDelete(product.id)}
+                  >
+                    Supprimer
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </main>
   );

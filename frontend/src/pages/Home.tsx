@@ -243,11 +243,27 @@ export default function Home() {
         </h2>
 
         <div className="team-grid">
+
+          <div className="nes-container is-dark with-title team-member">
+            <img src={avatarTerence} alt="Terence" className="team-avatar" />
+            <div>
+              <p className="title">Terence Sionneau</p>
+              <p>Dev leader</p>
+              <a
+                href="https://github.com/0xAdafang"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <i className="nes-icon github is-medium"></i>
+              </a>
+            </div>
+          </div>
+
           <div className="nes-container is-dark with-title team-member">
             <img src={avatarKevin} alt="Kevin" className="team-avatar" />
             <div>
               <p className="title">Kevin Espinoza</p>
-              <p>Scrum Master</p>
+              <p>Dev web</p>
               <a
                 href="https://github.com/kevin"
                 target="_blank"
@@ -280,21 +296,6 @@ export default function Home() {
               <p>Développeuse Web</p>
               <a
                 href="https://github.com/genania"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <i className="nes-icon github is-medium"></i>
-              </a>
-            </div>
-          </div>
-
-          <div className="nes-container is-dark with-title team-member">
-            <img src={avatarTerence} alt="Terence" className="team-avatar" />
-            <div>
-              <p className="title">Terence Sionneau</p>
-              <p>Développeur Web</p>
-              <a
-                href="https://github.com/terence"
                 target="_blank"
                 rel="noreferrer"
               >

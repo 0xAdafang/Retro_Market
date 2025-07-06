@@ -116,7 +116,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): vo
     }
   };
   
-  // Étend Express pour permettre req.user partout
+
   declare global {
     namespace Express {
       interface Request {
@@ -129,7 +129,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): vo
     }
   }
 
-  // ✅ Middleware
+
 export const authenticateToken = (
   req: Request,
   res: Response,
