@@ -1,7 +1,7 @@
 # 🎮 Retro Market
 
 **Retro Market** is a retro video game marketplace inspired by the aesthetic of NES consoles and cyber-neon visuals.  
-The project combines a **robust TypeScript backend with a PostgreSQL database**, and a **dynamic frontend** built with **React, TailwindCSS, and Framer Motion**.
+The project combines a **TypeScript backend with a PostgreSQL database**, and a **dynamic frontend** built with **React, TailwindCSS, and Framer Motion**.
 
 > ⚠️ *Please note: The application is in French to reflect its localized context.*
 
